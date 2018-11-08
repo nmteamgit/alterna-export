@@ -1,0 +1,44 @@
+
+%h1 Wealthview
+
+%table.table
+  %thead
+    %tr
+      %th
+        %h3 Updates
+      %th
+        %h3 New Subscribes
+      %th
+        %h3 Unsubscribes
+  %tbody{style: "font-size: 22px;"}
+    %tr
+      %td
+        = @wv_updates_count
+      %td
+        = @wv_new_contacts_count
+      %td
+        = @wv_unsubscribe_count
+
+%h1 Mailchimp
+
+%table.table
+  %thead
+    %tr
+      %th
+        %h3 Updates
+      %th
+        %h3 Unsubscribes
+      %th
+        %h3 Re-subscribes
+      %th
+        %h3 New Account
+  %tbody{style: "font-size: 22px;"}
+    %tr
+      %td
+        = @mc_updates_count
+      %td
+        = @mc_unsubscribe_count
+      %td
+        = @mc_resubscribe_count
+      %td
+        = @mc_new_accounts_count

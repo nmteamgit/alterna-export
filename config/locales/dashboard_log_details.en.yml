@@ -1,0 +1,17 @@
+en:
+  details:
+    TO_MAILCHIMP: 'Wealthview to Mailchimp'
+    FROM_MAILCHIMP: 'Mailchimp to Wealthview'
+    FTP_READ: 'FTP Read'
+    FTP_WRITE: 'FTP Write'
+    FTP_ARCHIVE: 'FTP Archive'
+    opcode:
+      '01': 'New Account'
+      '02': 'Consent Change'
+      '03': 'Opt-ins Updated'
+      '04': 'E-mail Updated'
+      '05': 'Account has been closed'
+      '11': 'Profile Updated'
+      '12': 'Unsubscribed'
+      '13': 'E-mail Updated'
+      '14': 'Resubscribed'

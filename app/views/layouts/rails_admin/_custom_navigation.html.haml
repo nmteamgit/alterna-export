@@ -1,0 +1,20 @@
+%div#list
+  %ul.nav.nav-tabs
+    %li{class: ('active' if !params[:scope])}
+      %a{href: "/admin/dashboard/overview"}
+        All
+    %li{class: ('active' if params[:scope] == 'today')}
+      %a{href: "/admin/dashboard/overview?scope=today"}
+        Today
+    %li{class: ('active' if params[:scope] == 'yesterday')}
+      %a{href: "/admin/dashboard/overview?scope=yesterday"}
+        Yesterday
+    %li{class: ('active' if params[:scope] == 'last_7_days')}
+      %a{href: "/admin/dashboard/overview?scope=last_7_days"}
+        Last 7 Days
+    %li{class: ('active' if params[:scope] == 'last_30_days')}
+      %a{href: "/admin/dashboard/overview?scope=last_30_days"}
+        Last 30 Days
+    %li{class: ('active' if params[:scope] == 'last_90_days')}
+      %a{href: "/admin/dashboard/overview?scope=last_90_days"}
+        Last 90 Days

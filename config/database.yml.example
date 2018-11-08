@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  reconnect: false
+  pool: 5
+  username: XXXXX
+
+development:
+  <<: *default
+  database: alterna_development
+
+test:
+  <<: *default
+  database: alterna_test
+
+staging:
+  <<: *default
+  database: alterna_staging

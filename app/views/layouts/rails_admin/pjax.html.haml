@@ -1,0 +1,50 @@
+:javascript
+  $('.nav.nav-list li.active').removeClass('active');
+  $('.nav.nav-list li[data-model="#{@abstract_model.to_param}"]').addClass('active');
+
+%title= "#{@abstract_model.try(:pretty_name) || @page_name} | #{[_get_plugin_name[0] || 'Rails', _get_plugin_name[1] || 'Admin'].join(' ')}"
+= favicon_link_tag 'favicon.ico'
+.page-header
+  %h1= @page_name
+- flash && flash.each do |key, value|
+  .alert{class: "alert-#{key}"}
+    %a.close{href: '#', :'data-dismiss' => "alert"}×
+    = value
+- if ['admin/dashboard'].include?(params[:controller])
+  = render 'layouts/rails_admin/custom_navigation'
+- else
+  = breadcrumb
+  %ul.nav.nav-tabs
+    = menu_for((@abstract_model ? (@object.try(:persisted?) ? :member : :collection) : :root), @abstract_model, @object)
+    = content_for :contextual_tabs
+
+/ just render yield for custom controller
+= yield
+
+- if ['mailchimp_to_wv_operation', 'wv_to_mailchimp_operation', 'dashboard_log'].include?(params[:model_name])
+  // Subscribed/Unsubscribed/Update filter
+  :javascript
+    $(document).ready( function() {
+      if($('#subscribe_link').length == 0){
+        $('#list .well').append('<input type="radio" name="details_filter" value="resubscribed" id="subscribe_link" style="margin: 0 3px;">Resubscribe</input>');
+        $('#list .well').append('<input type="radio" name="details_filter" value="unsubscribed" id="unsubscribe_link" style="margin: 0 3px;">Unsubscribe</input>')
+        $('#list .well').append('<input type="radio" name="details_filter" value="updated" id="update_link" style="margin: 0 3px;">Update</input>')
+      }
+
+      $('#subscribe_link,#unsubscribe_link,#update_link').click(function(){
+        $( "input[name='query']" ).val($(this).attr('value'));
+      });
+    });
+
+:javascript
+  $(document).ready( function() {
+    // hide dashboard home links
+    $('.dashboard_root_link').hide();
+    $('.root_links').find('a[href="/"]').hide();
+
+    $('a[href="/admin/dashboard/overview"]').removeAttr('target');
+    $('.switch-additionnal-fieldsets').val('between').change();
+    if($('.switch-additionnal-fieldsets').val('between').length > 1){
+      $('.switch-additionnal-fieldsets').val('between').not(':first').parent('.filter').remove();
+    }
+  });
