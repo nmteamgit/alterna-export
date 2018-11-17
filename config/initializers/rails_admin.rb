@@ -11,7 +11,7 @@ RailsAdmin.config do |config|
 
   config.default_items_per_page = 25
 
-  config.included_models = %w(Admin DashboardLog WvToMailchimpOperation MailchimpToWvOperation MailchimpNewAccount)
+  config.included_models = %w(Admin DashboardLog WvToMailchimpOperation MailchimpToWvOperation MailchimpNewAccount ProcessedFile)
 
   config.actions do
     dashboard                     # mandatory
