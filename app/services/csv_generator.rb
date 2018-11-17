@@ -16,7 +16,7 @@ class CsvGenerator
   end
 
   def generate_mailchimp_trigger_file(list_type)
-    timestamp = Time.zone.now.strftime('%Y%m%d_%H%M%S')
+    timestamp = DateTime.now.strftime('%Q')
     filename = "mw_to_wv_#{timestamp}.csv"
     filepath = Rails.application.secrets.app_csv_export_path+filename
     row_count = 0
@@ -60,6 +60,7 @@ class CsvGenerator
       unprocessed_rows: 0,
       total_rows: row_count
     )
+
     return filepath
   end
 
