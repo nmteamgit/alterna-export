@@ -1,0 +1,17 @@
+<% if flash[:notice].present? %>
+  <div class="alert alert-success" role="alert">
+    <p><%= flash[:notice] %></p>
+  </div>
+<% end %>
+
+<% if flash[:alert].present? %>
+  <div class="alert alert-danger" role="alert">
+    <p><%= flash[:alert] %></p>
+  </div>
+<% end %>
+
+<% if resource.errors.present? %>
+  <div class="alert alert-danger" role="alert">
+    <%= resource.errors.full_messages.join(',') %>
+  </div>
+<% end %>

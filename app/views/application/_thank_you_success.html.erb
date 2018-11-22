@@ -1,0 +1,17 @@
+<div style="text-align: center">
+  <div>
+    <h1>SUCCESSFULLY UNSUBSCRIBED</h1>
+    <p>You have successfully unsubscribed from the following list(s): </p>
+    <% flash[:unsubscribed_lists].each do |list| %>
+      <%= list %> <br/>
+    <% end %>
+  </div>
+  <div>
+    <h1>DÉSINSCRIPTION TERMINÉE.</h1>
+    <p>Vous avez réussi à vous désinscrire des listes suivantes : </p>
+    <% flash[:unsubscribed_lists].each do |list| %>
+      <%= list %> <br/>
+    <% end %>
+  </div>
+</div>
+<br />

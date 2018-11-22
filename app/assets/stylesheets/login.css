@@ -1,0 +1,60 @@
+/* custom css for login pages */
+
+.logo{
+  text-align: center;
+  margin-top: 30px;
+}
+
+.login-header{
+  background-color: rgba(242, 242, 242, 1);
+  text-align: center;
+}
+.login-header-content{
+  font-size: 34px;
+  padding: 10px 0;
+}
+form.form-horizontal .form-group{
+  margin-bottom:5px;
+}
+form.form-horizontal .control-label {
+  font-weight: normal;
+  vertical-align: middle;
+  line-height: 26px;
+  padding:0;
+}
+form.form-horizontal .form-control {
+  width:253px;
+  height:25px;
+  border-radius:0;
+  -webkit-border-radius:0;
+  -moz-border-radius:0;
+}
+form.form-horizontal .btn{
+  min-width: 140px;
+  background: transparent;
+  border: 1px solid #797979;
+  font-size: 14px;
+  padding: 4px 30px;
+  margin:15px 0 0 15px;
+}
+form.form-horizontal .link {
+  padding: 10px 0 0 15px;
+}
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+.alert {
+  padding: 0px 20px;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  margin: 0 auto 1rem;
+  text-align: center;
+}
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
