@@ -11,7 +11,7 @@ RailsAdmin.config do |config|
 
   config.default_items_per_page = 25
 
-  config.included_models = %w(Admin DashboardLog WvToMailchimpOperation MailchimpToWvOperation MailchimpNewAccount)
+  config.included_models = %w(Admin DashboardLog WvToMailchimpOperation MailchimpToWvOperation MailchimpNewAccount MailchimpUnsubscribe)
 
   config.actions do
     dashboard                     # mandatory
@@ -20,7 +20,7 @@ RailsAdmin.config do |config|
     new { only %w(Admin) }
     edit { only %w(Admin) }
     delete { only %w(Admin) }
-    export { only %w(DashboardLog WvToMailchimpOperation MailchimpToWvOperation)}
+    export { only %w(DashboardLog WvToMailchimpOperation MailchimpToWvOperation MailchimpUnsubscribe)}
   end
 
   config.navigation_static_links = {

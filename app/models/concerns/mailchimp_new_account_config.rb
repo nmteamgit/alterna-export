@@ -22,7 +22,11 @@ module MailchimpNewAccountConfig
         field :mailchimp_list_type do
           label 'Mailchimp List Name'
         end
-        field :data
+        field :data do
+          pretty_value do
+            JSON.pretty_generate(bindings[:object].data)
+          end
+        end
         field :created_at
         field :updated_at
       end

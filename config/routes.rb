@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   end
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   match '/mailchimp_callback', to: 'application#mailchimp_callback', as: :mailchimp_callback, via: [:get, :post]
-
+  match '/unsubscribe', to: 'application#mailchimp_unsubscribe', as: :mailchimp_unsubscribe, via: %i[get post]
+  match '/thank_you', to: 'application#thank_you', as: :thank_you, via: :get
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

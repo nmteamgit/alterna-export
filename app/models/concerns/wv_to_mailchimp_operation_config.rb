@@ -30,7 +30,11 @@ module WvToMailchimpOperationConfig
           label 'Mailchimp List Name'
         end
         field :opcode
-        field :data
+        field :data do
+          pretty_value do
+            JSON.pretty_generate(bindings[:object].data)
+          end
+        end
         field :created_at
         field :updated_at
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170907032301) do
+ActiveRecord::Schema.define(version: 20181113103740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,30 @@ ActiveRecord::Schema.define(version: 20170907032301) do
     t.index ["mailchimp_list_type", "action_name", "wv_row_id"], name: "mc_list_and_wv_row", using: :btree
     t.index ["status"], name: "index_mailchimp_to_wv_operations_on_status", using: :btree
     t.index ["updated_at"], name: "index_mailchimp_to_wv_operations_on_updated_at", using: :btree
+  end
+
+  create_table "mailchimp_unsubscribes", force: :cascade do |t|
+    t.string   "email"
+    t.string   "mailchimp_list_type"
+    t.text     "data"
+    t.text     "details"
+    t.string   "status"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "processed_files", force: :cascade do |t|
+    t.string   "file_name"
+    t.string   "file_path"
+    t.string   "status"
+    t.string   "file_type"
+    t.integer  "unprocessed_rows"
+    t.integer  "processed_rows"
+    t.integer  "total_rows"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["file_type"], name: "index_processed_files_on_file_type", using: :btree
+    t.index ["status"], name: "index_processed_files_on_status", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|

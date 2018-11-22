@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rails', '5.0.1'
-gem 'pg'
+gem 'pg', '~> 0.18'
 gem 'devise'
 gem 'cancancan'
 gem 'puma'
