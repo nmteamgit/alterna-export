@@ -54,7 +54,8 @@ class MailchimpToWvOperation < ActiveRecord::Base
                                       )
                                   )
     end
-    record.data = params
+
+    record.data = params.to_hash
     record.email = params['type']=='upemail' ? params['data']['new_email'] : params['data']['merges']['EMAIL']
     record.opcode = record.op_code
     record.email_consent = record.email_consent_value

@@ -7,7 +7,7 @@ class MailchimpNewAccount < ActiveRecord::Base
 
   def self.create_record(params)
     create(email: params['data']['merges']['EMAIL'],
-           data: params,
+	   data: params.to_hash,
            mailchimp_list_type: MailchimpToWvOperation.get_list_type(
                                   params['data']['list_id']
                                 )

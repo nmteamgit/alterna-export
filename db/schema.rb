@@ -76,6 +76,16 @@ ActiveRecord::Schema.define(version: 20181113103740) do
     t.index ["updated_at"], name: "index_mailchimp_to_wv_operations_on_updated_at", using: :btree
   end
 
+  create_table "mailchimp_unsubscribes", force: :cascade do |t|
+    t.string   "email"
+    t.string   "mailchimp_list_type"
+    t.text     "data"
+    t.text     "details"
+    t.string   "status"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
   create_table "processed_files", force: :cascade do |t|
     t.string   "file_name"
     t.string   "file_path"
