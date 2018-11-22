@@ -36,6 +36,19 @@
       });
     });
 
+- if ['processed_file'].include?(params[:model_name])
+  :javascript
+    $(document).ready( function() {
+      if($('#subscribe_link').length == 0){
+        $('#list .well').append('<input type="radio" name="details_filter" value="wv_to_mv" id="subscribe_link" style="margin: 0 10px 0 10px;"><strong>WV TO MV</strong></input>');
+        $('#list .well').append('<input type="radio" name="details_filter" value="mv_to_wv" id="unsubscribe_link" style="margin: 0 10px 0 10px;"><strong>MV TO WV</strong></input>')
+      }
+
+      $('#subscribe_link,#unsubscribe_link,#update_link').click(function(){
+        $( "input[name='query']" ).val($(this).attr('value'));
+      });
+    });
+
 :javascript
   $(document).ready( function() {
     // hide dashboard home links

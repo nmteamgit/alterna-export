@@ -13,17 +13,32 @@ class WvCsvParser
   end
 
   def perform
-    CSV.foreach(@file_path, {headers: true}) do |sheet_row|
+    CSV.foreach(@file_path, {encoding:'iso-8859-1:utf-8', headers: true}) do |sheet_row|
       AlternaExport::Application.config.CSV_HEADER.each_with_index do |key,index|
         @row[key] = sheet_row[index]
+        if key == "new_email" && @row[key].present?
+          @row["email"] = @row[key]
+        end 
+
+        if key == "op_code"
+          @row[key] = sprintf('%02d', sheet_row[index].to_i)
+        end
       end
       @read_count += 1
       row_with_values = @row.select {|k,v| v.present?}
       process_row(row_with_values)
       # delete the read file
-      File.delete(@file_path) if File.exist?(@file_path)
+      
     end
-
+    ProcessedFile.create(file_name: File.basename(@file_path), 
+      file_path: @file_path, 
+      status: @validation_errors.blank? ? "Success" : "Fail", 
+      file_type: "wv_to_mv", 
+      processed_rows: @success_count,
+      unprocessed_rows: @read_count - @success_count,
+      total_rows: @read_count
+    )
+    File.delete(@file_path) if File.exist?(@file_path) && @validation_errors.empty?
     return { read_count: @read_count,
              success_count: @success_count,
              validation_errors: @validation_errors
@@ -31,6 +46,10 @@ class WvCsvParser
   end
 
   private
+
+  def isEmail(str)
+    return str.match(/[a-zA-Z0-9._%]@(?:[a-zA-Z0-9]\.)[a-zA-Z]{2,4}/)
+  end
 
   def add_to_queue
     @row['email'] = @row['email'].downcase
@@ -51,7 +70,7 @@ class WvCsvParser
     else
       @validation_errors << [@row.values,
                              I18n.t('wv_to_mv.csv.validation_message',
-                               values: mandatory_values.join(' |'))
+                               values: mandatory_values.join(' |')), "Missing values #{mandatory_values - row_with_values.keys}"
                             ]
     end
   end
