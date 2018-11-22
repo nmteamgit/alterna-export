@@ -15,7 +15,7 @@ gem 'httparty'
 gem 'net-sftp', '~> 2.1', '>= 2.1.2'
 gem 'rails_admin'
 
-gem 'therubyracer'
+#gem 'therubyracer' #dev
 
 group :development, :test do
   gem 'byebug'
