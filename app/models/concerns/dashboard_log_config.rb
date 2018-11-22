@@ -38,8 +38,16 @@ module DashboardLogConfig
         field :request_type
         field :error_message
         field :filename
-        field :request_params
-        field :response_params
+        field :request_params do
+          pretty_value do
+            JSON.pretty_generate(bindings[:object].request_params)
+          end
+        end
+        field :response_params do
+          pretty_value do
+            JSON.pretty_generate(bindings[:object].response_params)
+          end
+        end
         field :created_at
         field :updated_at
       end

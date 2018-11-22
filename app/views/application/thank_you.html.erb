@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>Unsubscribe Successful</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style type="text/css">
+      html{
+          background-color: #eaeaea;
+      }
+      body{
+          margin: 50px;
+          color: #333333;
+          font-size: 16px;
+          font-family: sans-serif;
+      }
+      h1{
+          color: #f79646;
+          font-size: 18px;
+      }
+      .cuerpo{
+          width: 50%;
+          background-color: #ffffff;
+          margin: 0 auto;
+          padding: 50px;
+      }
+      
+      a{
+          text-align: left;
+          text-decoration: none;
+          color: #7f7f7f;
+          font-size: 14px;
+      }
+      
+      a:focus, a:hover{
+          text-decoration: underline;
+          color: #f79646;
+      }
+      
+      /**** R E S P O N S I V E ****/
+      @media only screen and (min-width : 767px) and (max-width : 1024px) {
+      /* Styles for some tablets devices */
+          .cuerpo{
+              width: 50%;
+          }
+      }
+      
+      @media only screen and (min-width : 481px) and (max-width : 768px) {
+      /* Styles for some tablets devices */
+          .cuerpo{
+              width: 75%;
+          }
+      }
+      
+      @media only screen and (min-width : 320px) and (max-width : 480px) {
+      /* Styles for some mobile devices */
+          body{
+              margin: 10px;
+              font-size: 12px;
+          }
+          .cuerpo{
+              width: 85%;
+              padding: 20px;
+          }
+          h1{
+              font-size: 18px;
+              padding-left: 20px;
+          }
+          a{
+              font-size: 11px;
+          }
+      }
+    </style>
+  </head>
+  <body class="fsBody" id="fsLocal">
+    <div class="cuerpo">
+      <% if flash[:subscribe_status] == 'success'%>
+        <%= render partial: 'application/thank_you_success' %>
+      <% elsif flash[:subscribe_status] == 'failure'%>
+        <%= render partial: 'application/thank_you_failure' %>
+      <% elsif flash[:subscribe_status] == 'one_success_and_one_failure' %>
+        <%= render partial: 'application/thank_you_success' %>
+        <%= render partial: 'application/thank_you_failure' %>
+      <% end %>
+      <p>Did you unsubscribe by accident? Click here to <%= link_to 're-subscribe', Rails.application.secrets['re_subscribe_url_en'] %>. <br/>
+        Vous êtes-vous désabonné par accident? Cliquez ici pour vous <%= link_to 'réabonner', Rails.application.secrets['re_subscribe_url_fr'] %>.</p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<div style="text-align: center">
+  <div>
+    <h1>INCOMPLETE UNSUBSCRIBE</h1>
+    <p>We were unable to complete your unsubscribe request.  
+      This may have occurred if the email you are unsubscribing does not match our database records.  
+      Please <%= link_to 'try again', Rails.application.secrets['unsubscribe_url'] %></p>
+    <p>If you continue to experience problems, please <%= link_to 'contact us', Rails.application.secrets['contact_us_en']%> </p>
+  </div>
+  <div>
+    <h1>DÉSINSCRIPTION NON TERMINÉE</h1>
+    <p>Nous n’avons pas pu traiter votre demande de désinscription. 
+      Cela peut se produire si l’adresse électronique que vous tentez de désinscrire ne se trouve pas dans notre base de données.
+      <%= link_to 'Veuillez réessayer', Rails.application.secrets['unsubscribe_url'] %></p>
+    <p>Si vous continuez d’avoir des problèmes, veuillez <%= link_to 'communiquer avec nous', Rails.application.secrets['contact_us_fr'] %></p>
+  </div>
+</div>

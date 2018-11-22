@@ -61,3 +61,16 @@
       $('.switch-additionnal-fieldsets').val('between').not(':first').parent('.filter').remove();
     }
   });
+
+- if params[:model_name] == 'mailchimp_unsubscribe' 
+  // Unsubscribed/ Failed filter
+  :javascript
+    $(document).ready(function(){
+      if($('#subscribe_link').length == 0){
+        $('#list .well').append('<input type="radio" name="details_filter" value="success" id="subscribe_link" style="margin: 0 3px;">SUCCESS</input>');
+        $('#list .well').append('<input type="radio" name="details_filter" value="failure" id="subscribe_link" style="margin: 0 3px;">FAILURE</input>');
+      }
+      $('#subscribe_link,#unsubscribe_link,#update_link').click(function(){
+        $( "input[name='query']" ).val($(this).attr('value'));
+      });
+    })
