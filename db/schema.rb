@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181113103740) do
+ActiveRecord::Schema.define(version: 20171212123921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,20 +84,6 @@ ActiveRecord::Schema.define(version: 20181113103740) do
     t.string   "status"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
-  end
-
-  create_table "processed_files", force: :cascade do |t|
-    t.string   "file_name"
-    t.string   "file_path"
-    t.string   "status"
-    t.string   "file_type"
-    t.integer  "unprocessed_rows"
-    t.integer  "processed_rows"
-    t.integer  "total_rows"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.index ["file_type"], name: "index_processed_files_on_file_type", using: :btree
-    t.index ["status"], name: "index_processed_files_on_status", using: :btree
   end
 
   create_table "roles", force: :cascade do |t|
