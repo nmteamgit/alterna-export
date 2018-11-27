@@ -42,6 +42,11 @@ module AdminConfig
           label 'Email Address'
           filterable false
         end
+        field :send_status do
+          css_class "enable_send_pointer text-center"
+          label 'Processed Files Status'
+          filterable false
+        end
       end
     end
   end
