@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" style="margin: 0 auto;  -ms-touch-action: manipulation; touch-action: manipulation; text-rendering: optimizeLegibility; padding: 0;">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta charset="utf-8">
+	</head>
+	<body style="margin: 0; padding: 0; background-repeat: repeat; width: 100% !important; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased;">
+
+
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tbody>
+				<tr>
+					<td>
+
+						<table width="600px" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#ffffff" style="font-family:helvetica, sans-serif;">
+							<tr>
+
+								<td style="padding: 50px 0; text-align: left; line-height: 1.7rem;">
+									<div style="font-size: 1.5rem; padding-bottom: 20px; line-height: 2.5rem; font-weight: bold">Hi team,</div>
+									<div>
+										This is a notification email about the transmitted files status.
+										<br>
+										See below for details:
+										<div style="margin-top: 20px;">
+											<span style="color:#afafaf;"><strong><%=@scenario%></strong></span>
+											<br>
+											<span style="color:#afafaf;">File Name:</span> <%=@file_name%>
+											<br>
+											<span style="color:#afafaf;">Date:</span> <%=@time%>
+											<br>
+											<% if @status.downcase == "success" %>
+												<span style="color:#afafaf;">Status:</span> <b style="color:#02afbf;"><%=@status%></b>
+											<% else %>
+												<span style="color:#afafaf;">Status:</span> <b style="color:red;"><%=@status%></b>
+											<% end %>
+											<br>
+											<a href="https://mc.alterna.ca/" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; padding: 10px 20px; background: #02afbf; color: #fff; display: inline-block; font-size:0.8rem; text-decoration: none; font-weight: bold; text-transform: uppercase; margin-top:30px;">
+												Click here for more information
+											</a>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</body>
+</html>
