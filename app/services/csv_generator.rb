@@ -61,6 +61,8 @@ class CsvGenerator
       total_rows: row_count
     )
 
+    ProcessedFileMailer.send_processed_file_status(filename, "Processed", "mv_to_wv").deliver_now
+
     return filepath
   end
 

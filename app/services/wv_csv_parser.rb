@@ -39,6 +39,9 @@ class WvCsvParser
       total_rows: @read_count
     )
     File.delete(@file_path) if File.exist?(@file_path) && @validation_errors.empty?
+
+    ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), @validation_errors.empty? ? "Success" : "Failed", "wv_to_mv").deliver_now
+
     return { read_count: @read_count,
              success_count: @success_count,
              validation_errors: @validation_errors
