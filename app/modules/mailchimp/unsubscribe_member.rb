@@ -37,7 +37,7 @@ module Mailchimp
 
     def unsubscribe_member_body_parameters
       {
-        email_address: @obj.email,
+        email_address: @obj.email.downcase,
         status: 'unsubscribed',
         merge_fields: { FNAME: @obj.data[:first_name],
                         LNAME: @obj.data[:last_name],
@@ -46,7 +46,7 @@ module Mailchimp
     end
 
     def member_unsubscribe_endpoint
-      email_md5 = Digest::MD5.hexdigest(@obj.email)
+      email_md5 = Digest::MD5.hexdigest(@obj.email.downcase)
       "#{@secrets['endpoint']}/lists/#{@secrets[@obj.mailchimp_list_type]['id']}/members/#{email_md5}"
     end
 
