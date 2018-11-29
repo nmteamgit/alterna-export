@@ -25,7 +25,7 @@ class MailchimpUnsubscribe < ApplicationRecord
     def unsubscribe!(params, list_name = nil)
       list_type_name = list_name || params[:list_type]
       list_type = get_list_type(list_type_name)
-      obj = new(email: params[:email], mailchimp_list_type: list_type, data: params.to_hash) # save record with form request
+      obj = new(email: params[:email].downcase, mailchimp_list_type: list_type, data: params.to_hash) # save record with form request
       obj.save!
       obj
     end

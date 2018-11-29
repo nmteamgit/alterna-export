@@ -54,14 +54,14 @@ class CsvGenerator
     end
     ProcessedFile.create(file_name: filename, 
       file_path: filepath, 
-      status: "Processed", 
+      status: "Success", 
       file_type: "mv_to_wv", 
       processed_rows: row_count,
       unprocessed_rows: 0,
       total_rows: row_count
     )
 
-    ProcessedFileMailer.send_processed_file_status(filename, "Processed", "mv_to_wv").deliver_now
+    ProcessedFileMailer.send_processed_file_status(filename, "Success", "mv_to_wv").deliver_now
 
     return filepath
   end
