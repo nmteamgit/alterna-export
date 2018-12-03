@@ -12,6 +12,14 @@ module ProcessedFileConfig
           filterable false
         end
         field :file_name do
+          formatted_value do
+            path = "/csv_imports/processed_" + bindings[:object].file_name if bindings[:object].file_path.present?
+            if bindings[:object].status == "Fail" && path
+              bindings[:view].link_to(bindings[:object].file_name, path)
+            else
+              bindings[:object].file_name
+            end
+          end
           filterable false
         end
         field :status do
