@@ -29,9 +29,15 @@
 											<span style="color:#afafaf;">Date:</span> <%=@time%>
 											<br>
 											<% if @status.downcase == "success" %>
-												<span style="color:#afafaf;">Status:</span> <b style="color:#02afbf;"><%=@status%></b>
+												<span>Status:</span> 
+												<div style="-webkit-border-radius: 200px-moz-border-radius: 200px;border-radius: 200px;padding: 5px 10px;background: #00bf36;color: #fff;display: inline-block;font-size:0.7rem;text-decoration: none;font-weight: bold;text-transform: uppercase; margin-left:10px;">
+													<b><%=@status%></b>
+												</div>
 											<% else %>
-												<span style="color:#afafaf;">Status:</span> <b style="color:red;"><%=@status%></b>
+												<span>Status:</span> 
+												<div style="-webkit-border-radius: 200px-moz-border-radius: 200px;border-radius: 200px;padding: 5px 10px;background: #bb1c1c;color: #fff;display: inline-block;font-size:0.7rem;text-decoration: none;font-weight: bold;text-transform: uppercase; margin-left:10px;">
+													<b><%=@status%></b>
+												</div>
 											<% end %>
 											<br>
 											<a href="https://mc.alterna.ca/" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; padding: 10px 20px; background: #02afbf; color: #fff; display: inline-block; font-size:0.8rem; text-decoration: none; font-weight: bold; text-transform: uppercase; margin-top:30px;">
