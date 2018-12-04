@@ -3,6 +3,7 @@ module AdminConfig
 
   included do
     rails_admin do
+      label "Users"
       create do
         field :name
         field :email
@@ -44,7 +45,7 @@ module AdminConfig
         end
         field :send_status do
           css_class "enable_send_pointer text-center"
-          label 'Processed Files Status'
+          label 'Receive Notification Email'
           filterable false
         end
       end
