@@ -29,11 +29,11 @@ module ProcessedFileConfig
           filterable false
         end
         field :processed_rows do
-          label 'Success'
+          label 'Successful Records'
           filterable false
         end
         field :unprocessed_rows do
-          label 'Fails'
+          label 'Failed Records'
           filterable false
         end
         field :total_rows do
