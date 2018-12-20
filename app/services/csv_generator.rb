@@ -61,8 +61,9 @@ class CsvGenerator
       total_rows: row_count
     )
 
-    ProcessedFileMailer.send_processed_file_status(filename, "Success", "mv_to_wv").deliver_now
-
+    Admin.where(send_status: true).each do |user|
+      ProcessedFileMailer.send_processed_file_status(filename, "Success", "mv_to_wv", user).deliver_now
+    end
     return filepath
   end
 
