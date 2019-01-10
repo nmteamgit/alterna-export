@@ -1,5 +1,7 @@
 class WvCsvParser
   require 'csv'
+  require 'tempfile'
+  require 'fileutils'
   include CsvValidation
   include SharedMethods
 
@@ -13,24 +15,86 @@ class WvCsvParser
   end
 
   def perform
-    CSV.foreach(@file_path, {headers: true}) do |sheet_row|
-      AlternaExport::Application.config.CSV_HEADER.each_with_index do |key,index|
-        @row[key] = sheet_row[index]
-      end
-      @read_count += 1
-      row_with_values = @row.select {|k,v| v.present?}
-      process_row(row_with_values)
-      # delete the read file
-      File.delete(@file_path) if File.exist?(@file_path)
-    end
+    begin
+      modify_csv(@file_path)
+      CSV.foreach(@file_path, {encoding:'iso-8859-1:utf-8', headers: true}) do |sheet_row|
+        AlternaExport::Application.config.CSV_HEADER.each_with_index do |key,index|
+          @row[key] = sheet_row[index]
+          if key == "new_email" && @row[key].present?
+            @row["email"] = @row[key]
+          end 
 
-    return { read_count: @read_count,
-             success_count: @success_count,
-             validation_errors: @validation_errors
-           }
+          if key == "op_code"
+            @row[key] = sprintf('%02d', sheet_row[index].to_i)
+          end
+        end
+        @read_count += 1
+        row_with_values = @row.select {|k,v| v.present?}
+        process_row(row_with_values)
+        # delete the read file
+        
+      end
+      ProcessedFile.create(file_name: File.basename(@file_path), 
+        file_path: @file_path, 
+        status: @validation_errors.blank? ? "Success" : "Fail", 
+        file_type: "wv_to_mv", 
+        processed_rows: @success_count,
+        unprocessed_rows: @read_count - @success_count,
+        total_rows: @read_count
+      )
+      File.delete(@file_path) if File.exist?(@file_path) && @validation_errors.empty?
+      Admin.where(send_status: true).each do |user|
+        ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), @validation_errors.empty? ? "Success" : "Failed", "wv_to_mv", user).deliver_now
+      end
+
+      return { read_count: @read_count,
+               success_count: @success_count,
+               validation_errors: @validation_errors
+             }
+    rescue => exception
+      ProcessedFile.create(file_name: File.basename(@file_path), 
+        file_path: @file_path, 
+        status: "Fail - " + exception.to_s, 
+        file_type: "wv_to_mv", 
+        processed_rows: @read_count,
+        unprocessed_rows: 0,
+        total_rows: 0
+      )
+      Admin.where(send_status: true).each do |user|
+        ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), "Failed - " + exception.to_s, "wv_to_mv", user).deliver_now
+      end
+      return { read_count: @read_count,
+         success_count: @read_count,
+         validation_errors: @validation_errors 
+       }
+    end
   end
 
   private
+
+  def modify_csv(file)
+    puts "Escaping file quotes to avoid Malformed Exceptions ....."
+    temp_file = Tempfile.new('temp')
+    begin
+      File.readlines(file, :encoding => 'ISO-8859-1').each do |line|
+        line = line[1...-2]
+        line.gsub!(/","/,",")
+        line.gsub!(/"/,"'")
+        temp_file << line +"\n"
+      end
+      temp_file.close
+      puts "Replacing original file ....."
+      FileUtils.mv(temp_file.path, file)
+      puts "Done."
+    ensure
+      temp_file.close
+      temp_file.unlink
+    end
+  end
+
+  def isEmail(str)
+    return str.match(/[a-zA-Z0-9._%]@(?:[a-zA-Z0-9]\.)[a-zA-Z]{2,4}/)
+  end
 
   def add_to_queue
     @row['email'] = @row['email'].downcase
@@ -51,7 +115,7 @@ class WvCsvParser
     else
       @validation_errors << [@row.values,
                              I18n.t('wv_to_mv.csv.validation_message',
-                               values: mandatory_values.join(' |'))
+                               values: mandatory_values.join(' |')), "Missing values #{mandatory_values - row_with_values.keys}"
                             ]
     end
   end

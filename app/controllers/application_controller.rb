@@ -24,6 +24,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def enable_admin_mailer
+    admin_user = Admin.find_by(email: params[:email])
+    if admin_user
+      if params[:send_status]
+        admin_user.update_attributes(send_status: true)
+      else
+        admin_user.update_attributes(send_status: false)
+      end
+    end
+    redirect_to "/admin/admin", flash: {:notice => "Success" }
+  end
+
 
   def mailchimp_unsubscribe
     if request.post?

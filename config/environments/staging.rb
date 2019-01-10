@@ -27,6 +27,16 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :user_name => '5113a17ef4a1d5',
+    :password => '60a046a020d349',
+    :address => 'smtp.mailtrap.io',
+    :domain => 'smtp.mailtrap.io',
+    :port => '2525',
+    :authentication => :cram_md5
+  }
+
   # Don't care if the mailer can't send.
   config.assets.raise_runtime_errors = true
   config.action_mailer.default_url_options = {

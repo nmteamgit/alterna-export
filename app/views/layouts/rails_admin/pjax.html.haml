@@ -36,6 +36,41 @@
       });
     });
 
+- if ['processed_file'].include?(params[:model_name])
+  :javascript
+    $(document).ready( function() {
+      if($('#subscribe_link').length == 0){
+        $('#list .well').append('<input type="radio" name="details_filter" value="wv_to_mv" id="subscribe_link" style="margin: 0 10px 0 10px;"><strong>WV TO MV</strong></input>');
+        $('#list .well').append('<input type="radio" name="details_filter" value="mv_to_wv" id="unsubscribe_link" style="margin: 0 10px 0 10px;"><strong>MV TO WV</strong></input>')
+      }
+
+      $('#subscribe_link,#unsubscribe_link,#update_link').click(function(){
+        $( "input[name='query']" ).val($(this).attr('value'));
+      });
+    });
+
+- if ['admin'].include?(params[:model_name])
+  :javascript
+    $(document).ready( function() {
+      $('.enable_send_pointer span.label').css("cursor","pointer");
+
+      $('.enable_send_pointer span').each(function(){
+        console.log($(this).parent().parent().find(".email_field").text());
+        email = $(this).parent().parent().find(".email_field").text();
+        this.dataset.email =  email;
+
+        $(this).click(function(){
+          if ($(this).hasClass("label-danger")) {
+            window.location = "/enable_admin_mailer?email=" + this.dataset.email + "&send_status=true";
+          } else { 
+            window.location = "/enable_admin_mailer?email=" + this.dataset.email;
+          }
+        });
+
+      });    
+    });
+
+
 :javascript
   $(document).ready( function() {
     // hide dashboard home links

@@ -42,3 +42,31 @@
         = @mc_resubscribe_count
       %td
         = @mc_new_accounts_count
+
+%h1 Transmitted Files
+
+%table.table
+  %thead
+    %tr
+      %th
+        %h3 Total
+      %th
+        %h3 MV To WV
+      %th
+        %h3 WV To MV
+      %th
+        %h3 Sucess
+      %th
+        %h3 Fail
+  %tbody{style: "font-size: 22px;"}
+    %tr
+      %td
+        = @processed_files_count
+      %td
+        = @processed_files_mv_to_wv_count
+      %td
+        = @processed_files_mv_to_wv_count
+      %td
+        = @processed_files_success_count
+      %td
+        = @processed_files_failed_count

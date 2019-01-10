@@ -28,13 +28,13 @@ class MailchimpToWvOperation < ActiveRecord::Base
   end
 
   def interests
-    if ['11', '12', '14'].include?(opcode)
-      result = []
+    result = []
+    if ['11', '12', '14'].include?(opcode) && data['data']['merges']['INTERESTS'].present?
       data['data']['merges']['INTERESTS'].split(',').each do |name|
         result << Rails.application.secrets.mailchimp[mailchimp_list_type]['interests'][name.strip]
       end
-      result.join('|')
     end
+    result.present? ? result.join('|') : ""
   end
 
   def self.create_record(params)
@@ -54,8 +54,7 @@ class MailchimpToWvOperation < ActiveRecord::Base
                                       )
                                   )
     end
-
-    record.data = params.to_hash
+    record.data = params
     record.email = params['type']=='upemail' ? params['data']['new_email'] : params['data']['merges']['EMAIL']
     record.opcode = record.op_code
     record.email_consent = record.email_consent_value
