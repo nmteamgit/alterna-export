@@ -137,6 +137,9 @@ class WvCsvParser
     when '05'
       row_operation(account_close_required_fields,
                     row_with_values)
+    else 
+      row_operation(new_subscriber_required_fields,
+                    row_with_values)
     end
   end
 
