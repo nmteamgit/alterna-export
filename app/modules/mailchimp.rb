@@ -114,9 +114,9 @@ module Mailchimp
       # eg: '01|02'
       interests = {}
       all_interest_codes = ['01', '02', '03']
-      opt_in_codes = value.split('|')
+      opt_in_codes = value.split('|') if value
       all_interest_codes.each do |i_code|
-        interests[@secrets[list_type]['interests'][i_code]] = opt_in_codes.include?(i_code)
+        interests[@secrets[list_type]['interests'][i_code]] = opt_in_codes.include?(i_code) if opt_in_codes
       end
       interests
     end
