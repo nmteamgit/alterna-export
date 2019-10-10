@@ -12,9 +12,10 @@ class Ftp
     @app_import_path = Rails.application.secrets.app_csv_import_path
   end
 
-  def fetch_data_files
+  def fetch_data_files (type=nil)
     begin
       data_filepaths = []
+      data_filepaths << @app_import_path+"wv_to_amv_20191007_060518.csv" if type == 'Alterna_Bank'
       Net::SFTP.start(@ftp_server_host_name, @ftp_login, password: @ftp_password, port: @ftp_port) do |sftp|
         files = sftp.dir.glob(@file_read_path, "wv_to_amv_*")
         files.each do |file|
@@ -26,6 +27,16 @@ class Ftp
     rescue Exception => e
       log_error(e.message, DashboardLog::FTP_READ)
     end
+    return data_filepaths
+  end
+
+
+  def fetch_reprocessing_data_files
+    data_filepaths = []
+    Dir.glob(@app_import_path+'processed*.csv').each do |file_name|
+      data_filepaths << file_name
+    end
+    puts data_filepaths
     return data_filepaths
   end
 

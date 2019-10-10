@@ -1,9 +1,10 @@
 namespace :execute do
 
   task process_wv_csv_file: :environment do
+    Rails.logger = Logger.new(STDOUT)
     desc %Q{ >> Read the ftp file, Write to DB, Process to mailchimp}
     AlternaExport::Application.config.MAILCHIMP_LIST_TYPES.each do |list_name|
-      data_filepaths = Ftp.new(list_name).fetch_data_files # fetch files from FTP
+      data_filepaths = Ftp.new(list_name).fetch_data_files(list_name) # fetch files from FTP
       data_filepaths.each do |amv_file_path|
         csv_parser = WvCsvParser.new({listname: list_name, filepath: amv_file_path}).perform # parse csv and write to DB
         processed_file_path = CsvGenerator.new.generate_processed_file(
@@ -17,6 +18,22 @@ namespace :execute do
                                 ) # write processed file to FTP
         Ftp.new(list_name).archive(File.basename(amv_file_path)) # move generated file to Archived folder
       end
+    end
+    Mailchimp::DataProcessor.new.process #write to mailchimp
+  end
+
+  task reprocess_wv_csv_file: :environment do
+    Rails.logger = Logger.new(STDOUT)
+    desc %Q{ >> Read the ftp file, Write to DB, Process to mailchimp}
+      data_filepaths = Ftp.new(nil).fetch_reprocessing_data_files
+      data_filepaths.each do |amv_file_path|
+        csv_parser = WvCsvParser.new({filepath: amv_file_path, reprocessing: true}).perform
+        processed_file_path = CsvGenerator.new.generate_processed_file(
+                                File.basename(amv_file_path.gsub("processed_", "")),
+                                csv_parser[:read_count],
+                                csv_parser[:success_count],
+                                csv_parser[:validation_errors]
+                              )
     end
     Mailchimp::DataProcessor.new.process #write to mailchimp
   end

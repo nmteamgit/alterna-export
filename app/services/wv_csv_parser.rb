@@ -12,11 +12,16 @@ class WvCsvParser
     @success_count = 0
     @list_type = params[:listname]
     @file_path = params[:filepath]
+    @reprocessing = params[:reprocessing] || false
   end
 
   def perform
     begin
-      modify_csv(@file_path)
+      if @reprocessing
+        build_csv(@file_path)
+      else
+        modify_csv(@file_path) 
+      end  
       CSV.foreach(@file_path, {encoding:'iso-8859-1:utf-8', headers: true}) do |sheet_row|
         AlternaExport::Application.config.CSV_HEADER.each_with_index do |key,index|
           @row[key] = sheet_row[index]
@@ -34,17 +39,27 @@ class WvCsvParser
         # delete the read file
         
       end
-      ProcessedFile.create(file_name: File.basename(@file_path), 
-        file_path: @file_path, 
-        status: @validation_errors.blank? ? "Success" : "Fail", 
-        file_type: "wv_to_mv", 
-        processed_rows: @success_count,
-        unprocessed_rows: @read_count - @success_count,
-        total_rows: @read_count
-      )
-      File.delete(@file_path) if File.exist?(@file_path) && @validation_errors.empty?
+      if @reprocessing
+        processed_files = ProcessedFile.where(file_path: @file_path.gsub("processed_", ""))
+        processed_files.each do|item|
+          item.status = @validation_errors.blank? ? "Success" : "Fail"
+          item.processed_rows = @validation_errors.blank? ? item.total_rows : (item.processed_rows + @success_count)
+          item.unprocessed_rows = item.total_rows - item.processed_rows
+          item.save
+        end
+      else
+        ProcessedFile.create(file_name: File.basename(@file_path), 
+          file_path: @file_path, 
+          status: @validation_errors.blank? ? "Success" : "Fail", 
+          file_type: "wv_to_mv", 
+          processed_rows: @success_count,
+          unprocessed_rows: @read_count - @success_count,
+          total_rows: @read_count
+        )
+      end
+      File.delete(@file_path.gsub("processed_", "")) if File.exist?(@file_path.gsub("processed_", "")) && @validation_errors.empty?
       Admin.where(send_status: true).each do |user|
-        ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), @validation_errors.empty? ? "Success" : "Failed", "wv_to_mv", user).deliver_now
+        ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), @validation_errors.empty? ? "Success" : "Failed", "wv_to_mv", user).deliver_now if !@reprocessing
       end
 
       return { read_count: @read_count,
@@ -52,16 +67,18 @@ class WvCsvParser
                validation_errors: @validation_errors
              }
     rescue => exception
-      ProcessedFile.create(file_name: File.basename(@file_path), 
-        file_path: @file_path, 
-        status: "Fail - " + exception.to_s, 
-        file_type: "wv_to_mv", 
-        processed_rows: @read_count,
-        unprocessed_rows: 0,
-        total_rows: 0
-      )
-      Admin.where(send_status: true).each do |user|
-        ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), "Failed - " + exception.to_s, "wv_to_mv", user).deliver_now
+      if !@reprocessing
+        ProcessedFile.create(file_name: File.basename(@file_path), 
+          file_path: @file_path, 
+          status: "Fail - " + exception.to_s, 
+          file_type: "wv_to_mv", 
+          processed_rows: @read_count,
+          unprocessed_rows: 0,
+          total_rows: 0
+        )
+        Admin.where(send_status: true).each do |user|
+          ProcessedFileMailer.send_processed_file_status(File.basename(@file_path), "Failed - " + exception.to_s, "wv_to_mv", user).deliver_now if !@reprocessing
+        end
       end
       return { read_count: @read_count,
          success_count: @read_count,
@@ -69,7 +86,7 @@ class WvCsvParser
        }
     end
   end
-
+  
   private
 
   def modify_csv(file)
@@ -90,6 +107,20 @@ class WvCsvParser
       temp_file.close
       temp_file.unlink
     end
+  end
+
+  def build_csv(file)
+   new_file = file.gsub('processed', 'failed')
+    CSV.open(new_file, 'wb') do |csv|
+      headers = File.readlines(file.gsub('processed_', ''), :encoding => 'ISO-8859-1').first.split(",")
+
+      csv << headers
+      File.readlines(file, :encoding => 'ISO-8859-1').each_with_index do |row, i|
+        next if i == 0
+        csv << row.split(",").first(headers.size)
+      end
+    end
+    return new_file
   end
 
   def isEmail(str)

@@ -11,8 +11,8 @@ module CsvValidation
       AlternaExport::Application.config.CSV[:LANGUAGE],
       AlternaExport::Application.config.CSV[:BENEFIT_TYPE],
       AlternaExport::Application.config.CSV[:CONSENT_DATE],
-      AlternaExport::Application.config.CSV[:INHS_CODE],
-      AlternaExport::Application.config.CSV[:BUSINESS_TYPE]
+      #AlternaExport::Application.config.CSV[:INHS_CODE],
+      #AlternaExport::Application.config.CSV[:BUSINESS_TYPE]
     ]
   end
 
