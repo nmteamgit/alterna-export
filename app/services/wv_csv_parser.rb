@@ -154,13 +154,13 @@ class WvCsvParser
   def process_row(row_with_values)
     case @row['op_code']
     when '01'
-      row_operation(new_subscriber_required_fields,
+      row_operation(new_subscriber_required_fields(@row),
                     row_with_values)
     when '02'
       row_operation(change_in_consent_required_fields(@row),
                     row_with_values)
     when '03'
-      row_operation(change_in_opt_ins_required_fields,
+      row_operation(change_in_opt_ins_required_fields(@row),
                     row_with_values)
     when '04'
       row_operation(change_in_email_required_fields,
