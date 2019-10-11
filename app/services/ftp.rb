@@ -15,7 +15,7 @@ class Ftp
   def fetch_data_files (type=nil)
     begin
       data_filepaths = []
-      data_filepaths << @app_import_path+"wv_to_amv_20191007_060518.csv" if type == 'Alterna_Bank'
+      #data_filepaths << @app_import_path+"wv_to_amv_20191007_060518.csv" if type == 'Alterna_Bank'
       Net::SFTP.start(@ftp_server_host_name, @ftp_login, password: @ftp_password, port: @ftp_port) do |sftp|
         files = sftp.dir.glob(@file_read_path, "wv_to_amv_*")
         files.each do |file|
