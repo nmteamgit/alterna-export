@@ -9,6 +9,8 @@ module CsvValidation
       AlternaExport::Application.config.CSV[:EMAIL_CONSENT],
       AlternaExport::Application.config.CSV[:LANGUAGE],
       AlternaExport::Application.config.CSV[:BENEFIT_TYPE],
+      #AlternaExport::Application.config.CSV[:INHS_CODE],
+      #AlternaExport::Application.config.CSV[:BUSINESS_TYPE]
     ]
     if csv_row[ AlternaExport::Application.config.CSV[:EMAIL_CONSENT] ] == 'Y'
       required += [ AlternaExport::Application.config.CSV[:OPT_INS],
@@ -34,7 +36,7 @@ module CsvValidation
   end
 
   def change_in_opt_ins_required_fields(csv_row)
-    [ AlternaExport::Application.config.CSV[:OP_CODE],
+    required = [ AlternaExport::Application.config.CSV[:OP_CODE],
       AlternaExport::Application.config.CSV[:TIMESTAMP],
       AlternaExport::Application.config.CSV[:WV_ROW_ID],
       AlternaExport::Application.config.CSV[:EMAIL],

@@ -18,6 +18,7 @@ class WvCsvParser
   def perform
     begin
       if @reprocessing
+        @list_type = "Alterna_Bank"
         build_csv(@file_path)
       else
         modify_csv(@file_path) 
@@ -43,6 +44,7 @@ class WvCsvParser
         processed_files = ProcessedFile.where(file_path: @file_path.gsub("processed_", ""))
         processed_files.each do|item|
           item.status = @validation_errors.blank? ? "Success" : "Fail"
+          item.unprocessed_was = item.unprocessed_rows
           item.processed_rows = @validation_errors.blank? ? item.total_rows : (item.processed_rows + @success_count)
           item.unprocessed_rows = item.total_rows - item.processed_rows
           item.save
@@ -169,7 +171,7 @@ class WvCsvParser
       row_operation(account_close_required_fields,
                     row_with_values)
     else 
-      row_operation(new_subscriber_required_fields,
+      row_operation(new_subscriber_required_fields(@row),
                     row_with_values)
     end
   end
