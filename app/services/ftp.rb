@@ -45,7 +45,7 @@ class Ftp
       Net::SFTP.start(@ftp_server_host_name, @ftp_login, password: @ftp_password, port: @ftp_port) do |sftp|
         sftp.upload!(source_path, destination_path)
       end
-      File.delete(source_path) if File.exist?(source_path) # delete source file after upload
+      #File.delete(source_path) if File.exist?(source_path) # delete source file after upload
     rescue Exception => e
       log_error(e.message, DashboardLog::FTP_WRITE)
     end
