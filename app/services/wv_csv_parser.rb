@@ -18,6 +18,7 @@ class WvCsvParser
   def perform
     begin
       if @reprocessing
+        @list_type = "Alterna_Bank"
         build_csv(@file_path)
       else
         modify_csv(@file_path) 
