@@ -135,6 +135,7 @@ module Mailchimp
 
     def new_subscriber_body_parameters(data)
       data_row = data.data
+      #'OP_CODE': data_row['op_code']
       {email_address: data_row['email'],
        status: email_consent(data_row['email_consent']),
        merge_fields: {'FNAME': data_row['fname'],
@@ -165,6 +166,7 @@ module Mailchimp
 
     def change_in_opt_ins_body_parameters(data)
       data_row = data.data
+      #'OP_CODE': data_row['op_code']
       {email_address: data_row['email'],
        status: email_consent(data_row['email_consent']),
        merge_fields: {'FNAME': data_row['fname'],
