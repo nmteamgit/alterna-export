@@ -26,7 +26,7 @@ class CsvGenerator
     row_count = 0
     CSV.open(filepath, 'wb', { row_sep: "\r\n" }) do |csv|
       csv << AlternaExport::Application.config.CSV_HEADER
-      target_date = date.to_date
+      target_date = date.to_date - 1.day
       MailchimpToWvOperation.to_be_processed(list_type).where(created_at: target_date.beginning_of_day..target_date.end_of_day).each do |record|
         row_count += 1
         data = record.data
