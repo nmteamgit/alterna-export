@@ -40,11 +40,18 @@ namespace :execute do
 
   task mailchimp_callback: :environment do
     desc %Q{ >> Read from DB, create csv file, put in ftp}
+    data_filepaths = Ftp.new(nil).fetch_missing_mv_to_wv
+    if data_filepaths.blank?
+      data_filepaths << Date.today.strftime("%Y%m%d")
+    end
     AlternaExport::Application.config.MAILCHIMP_LIST_TYPES.each do |list_name|
-      file = CsvGenerator.new.generate_mailchimp_trigger_file(list_name) # create csv file
-      Ftp.new(list_name).write( file,
-                                Rails.application.secrets.mv_to_wv_write_filepath[list_name]+File.basename(file)
-                              ) # write file to FTP
+      data_filepaths.each do |date|
+        puts "Running >> #{date}, #{list_name}"
+        file = CsvGenerator.new.generate_mailchimp_trigger_file(list_name, date) # create csv file
+        Ftp.new(list_name).write( file,
+          Rails.application.secrets.mv_to_wv_write_filepath[list_name]+File.basename(file)
+        ) # write file to FTP
+      end
     end
   end
 

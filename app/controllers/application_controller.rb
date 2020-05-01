@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   private
 
   def callback_params
-    params.permit(:type, :fired_at, data: [:new_email, :old_email, :list_id, merges: [:EMAIL, :FNAME, :LNAME, :WV_ROW_ID, :INHS_CODE, :BF_TYPE, :BUS_TYPE, :BUS_NAME, :TIMESTAMP, :C_DATE, :LANGUAGE, :INTERESTS]])
+    params.permit(:type, :fired_at, data: [:wv_row_id, :new_email, :old_email, :list_id, merges: [:EMAIL, :FNAME, :LNAME, :WV_ROW_ID, :INHS_CODE, :BF_TYPE, :BUS_TYPE, :BUS_NAME, :TIMESTAMP, :C_DATE, :LANGUAGE, :INTERESTS]])
   end
 
 

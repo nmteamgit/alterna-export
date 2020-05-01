@@ -46,7 +46,7 @@ class MailchimpToWvOperation < ActiveRecord::Base
                   )
     else
       record = find_or_initialize_by(
-                        wv_row_id: params['type']=='upemail' ? nil : params['data']['merges']['WV_ROW_ID'],
+                        wv_row_id: params['type']=='upemail' ? nil : (params['data']['wv_row_id'] || params['data']['merges']['WV_ROW_ID']),
                         status: nil,
                         action_name: params['type'],
                         mailchimp_list_type: MailchimpToWvOperation.get_list_type(
