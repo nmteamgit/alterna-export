@@ -10,6 +10,7 @@ class Ftp
     @ftp_port = Rails.application.secrets.ftp_port
     @file_read_path = Rails.application.secrets.wv_to_mv_read_filepath[@list_type]
     @app_import_path = Rails.application.secrets.app_csv_import_path
+    @app_export_path = Rails.application.secrets.app_csv_export_path
   end
 
   def fetch_data_files (type=nil)
@@ -28,6 +29,18 @@ class Ftp
       log_error(e.message, DashboardLog::FTP_READ)
     end
     return data_filepaths
+  end
+
+  def fetch_missing_mv_to_wv
+    data_filepaths = []
+    ((Date.today - 1.month)..Date.today).each do |date|
+      formatted_date = date.strftime("%Y%m%d")
+      entries = Dir.entries(Rails.application.secrets.app_csv_export_path).select {|f| f.include?(formatted_date)}
+      if entries.count < 2
+        data_filepaths << formatted_date
+      end
+    end
+    data_filepaths
   end
 
 

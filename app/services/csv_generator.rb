@@ -15,14 +15,19 @@ class CsvGenerator
     return amw_write_file_path
   end
 
-  def generate_mailchimp_trigger_file(list_type)
-    timestamp = Time.zone.now.strftime('%Y%m%d_%H%M%S')
-    filename = "mw_to_wv_#{timestamp}.csv"
+  def generate_mailchimp_trigger_file(list_type, date=nil)
+    if date
+      timestamp = Time.zone.now.strftime("#{date}_%H%M%S")
+    else
+      timestamp = Time.zone.now.strftime('%Y%m%d_%H%M%S')
+    end
+    filename = "mw_to_wv_#{timestamp}_#{list_type}.csv"
     filepath = Rails.application.secrets.app_csv_export_path+filename
     row_count = 0
     CSV.open(filepath, 'wb', { row_sep: "\r\n" }) do |csv|
       csv << AlternaExport::Application.config.CSV_HEADER
-      MailchimpToWvOperation.to_be_processed(list_type).each do |record|
+      target_date = date.to_date
+      MailchimpToWvOperation.to_be_processed(list_type).where(created_at: target_date.beginning_of_day..target_date.end_of_day).each do |record|
         row_count += 1
         data = record.data
         fired_at = DateTime.parse(data['fired_at'].present? ? data['fired_at'] : record.created_at.to_s).utc.strftime('%Y%m%d%H%M%S')
