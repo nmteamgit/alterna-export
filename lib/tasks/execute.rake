@@ -48,7 +48,6 @@ namespace :execute do
       data_filepaths.each do |date|
         puts "Running >> #{date}, #{list_name}"
         file = CsvGenerator.new.generate_mailchimp_trigger_file(list_name, date) # create csv file
-        puts file
         Ftp.new(list_name).write( file,
           Rails.application.secrets.mv_to_wv_write_filepath[list_name]+File.basename(file)
         ) # write file to FTP
