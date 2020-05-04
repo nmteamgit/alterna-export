@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
 
   def mailchimp_callback
-    logger = Logger.new("#{Rails.root}/log/mailchimp_callback.log")
+    logger = Logger.new("#{Rails.root}/log/mailchimp_callback_incoming.log")
     logger.info(callback_params)
     begin
       # push data to db.
